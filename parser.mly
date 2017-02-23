@@ -1,12 +1,11 @@
-/* File parser.mly */
-%token <int> INT
-%token RIGHT UP DOWN LEFT
+(* File parser.mly *)
 %token EOL
+%token <string> LINE
 %start main             /* the entry point */
-%type <int> main
+%type <int> INT
 %%
 main:
-   expr EOL                { $1 }
+   expr EOL                { (* Build a list of $1 *) }
 ;
 expr:
  expr RIGHT           { Right ($1) }
