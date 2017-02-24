@@ -1,9 +1,9 @@
 (* File lexer.mll *)
 {
 
-open Parser   (* The type token is defined in parser.mli *)
+open Parser           (* The type token is defined in parser.mli *)
 
-let lineNum = ref 1   (* current token line number *)
+let line = ref 1      (* current token line number *)
 
 exception SyntaxError of string
 exception EOF
@@ -13,25 +13,33 @@ let syntaxError err = raise (SyntaxError (err ^ " on line " ^ (string_of_int !li
 }
 
 let blank = [' ' '\r' '\t']
-
 let alpha = ['a'-'z']
-let word  = alpha*
-
 let digit = ['0'-'9']
 let number = digit*
+let word = alpha (alpha | digit | '_')*
+
+(* keyword -> token translation table *)
+let keywords = [
+    "begin", BEGIN; "end", END; "read"
+]
 
 rule token = parse
       blank           { token lexbuf }        (* skip blanks *)
     | ":="            { ASSIGN }              (* assignment token *)
+    | '('             { LEFTPAREN }
+    | ')'             { RIGHTPAREN }
     | ';'             { SEMICOLON }           (* end line token *)
     | '\n'            { incr lineNum; EOL }   (* record & deal with new line *)
-    | _               { syntaxError "Couldn't identify the token" }
-    | eof             { raise EOF }           (* no more tokens *)
-    | digits as d {
-            ( * parse literal *)
-            LITERAL (int_of_string d)
+    | _               { syntaxError "Token doesn't exist" }
+    | eof             { EOF }           (* no more tokens *)
+    | number as num {
+        (* parse number *)
+        NUM (int_of_string num)
     }
     | word as lxm {
-            let l = String.lowercase lxm in
-            LINE -> lxm (* NOT SURE ABOUT THIS *) 
+        (* if not a keyword, then it's a normal word *)
+        let l = String.lowercase lxm in
+        try List.assoc l keywords
+        with Not_found -> TOKEN lxm
     }
+
