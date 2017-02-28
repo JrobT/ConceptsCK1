@@ -12,7 +12,7 @@ let syntaxError err = raise (SyntaxError (err ^ " on line " ^ (string_of_int !li
 
 let keywords = [
     "begin", BEGIN; "end", END; "read", READ; "append", APPEND;
-    "prepend", PREPEND; "list", LIST;
+    "prepend", PREPEND; "comma", COMMA;
 ]
 
 }
@@ -26,9 +26,10 @@ let word = alpha (alpha | digit | '_')*
 rule token = parse
       blank           { token lexbuf }        (* skip blanks *)
     | ":="            { ASSIGN }              (* assignment token *)
-    | '('             { LEFTPAREN }
-    | ')'             { RIGHTPAREN }
+    | '<'             { LEFTANGLE }           (* start of statement *)
+    | '>'             { RIGHTANGLE }          (* end of statement *)
     | ';'             { SEMICOLON }           (* end line token *)
+    | ','             { COMMA }               (* argument separator *)
     | '\n'            { incr lineNum; EOL }   (* record & deal with new line *)
     | _               { syntaxError "Token doesn't exist" }
     | eof             { EOF }                 (* no more tokens *)
