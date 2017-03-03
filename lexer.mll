@@ -43,3 +43,6 @@ rule token = parse
         with Not_found -> TOKEN lxm
     }
 
+{
+
+    }
