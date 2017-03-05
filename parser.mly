@@ -1,4 +1,8 @@
 (* File parser.mly *)
+%{
+    open Reader
+}%
+
 %token START FINISH EOL EOF
 %token <string> TOKEN
 %token <int> NUM
@@ -13,40 +17,10 @@
 %%
 
 main:
-    ajStart statements ajEnd EOF { raise End_of_file }
+    expr EOL { $1 }
 ;
 
-ajStart:
-|   START { start () }
-;
-
-ajFinish:
-|   FINISH { finish () }
-;
-
-statements:
-| { }
-| statement SEMICOLON statements { }
-;
-
-statement:
-| TOKEN ASSIGN expression { assignToVar $1 $3 }
-| READ LEFTANGLE lTokens RIGHTANGLE { readInput $3 }
-| WRITE LEFTANGLE lExpr RIGHTANGLE { writeOutput $3 }
-;
-
-lTokens:
-| TOKEN { [$1] }
-| TOKEN COMMA lExpr { $1 :: $3 }
-;
-
-lExpr:
-| expression { [$1] }
-| expression COMMA lExpr { $1 :: $3 }
-;
-
-(* need operators that:
-    * Append a letter to a string
-    * Prepend a letter to the front of the string
-    * Maybe one to list strings together
-*)
+expr:
+    INT                             { $1 }
+ |  LEFTANGLE expr RIGHTANGLE       { $2 }
+ |  APPEND expr                     { 

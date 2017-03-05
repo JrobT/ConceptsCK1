@@ -42,7 +42,3 @@ rule token = parse
         try List.assoc l keywords
         with Not_found -> TOKEN lxm
     }
-
-{
-
-    }
