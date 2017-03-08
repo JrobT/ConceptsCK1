@@ -1,21 +1,17 @@
-(* File parser.mly *)
 %{
     open Reader
-}%
-
+%}
 %token START FINISH EOL EOF
 %token <int> NUM
-%token SEMICOLON
-
+%token <string> STRING
 %start main             /* the entry point */
-%type <unit> program
-
+%type <Reader.term> main
 %%
 
 main:
-    expr EOL { $1 }
+    expr EOF { $1 }
 ;
 
 expr:
-        INT                             { $1 }
+        STRING          { STR $1 }
     ;

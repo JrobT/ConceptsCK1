@@ -1,0 +1,10 @@
+parser.cmi : Reader.cmi
+Reader.cmi :
+lexer.cmo : parser.cmi
+lexer.cmx : parser.cmx
+main.cmo : parser.cmi lexer.cmo
+main.cmx : parser.cmx lexer.cmx
+parser.cmo : Reader.cmi parser.cmi
+parser.cmx : Reader.cmx parser.cmi
+Reader.cmo : Reader.cmi
+Reader.cmx : Reader.cmi
