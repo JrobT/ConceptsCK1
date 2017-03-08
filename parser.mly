@@ -4,12 +4,8 @@
 }%
 
 %token START FINISH EOL EOF
-%token <string> TOKEN
 %token <int> NUM
-%token ASSIGN
-%token APPEND PREPEND
-%token LEFTANGLE RIGHTANGLE
-%token COMMA SEMICOLON
+%token SEMICOLON
 
 %start main             /* the entry point */
 %type <unit> program
@@ -21,6 +17,5 @@ main:
 ;
 
 expr:
-    INT                             { $1 }
- |  LEFTANGLE expr RIGHTANGLE       { $2 }
- |  APPEND expr                     { 
+        INT                             { $1 }
+    ;
