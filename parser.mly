@@ -1,10 +1,13 @@
+(* File parser.mly, by Alex Everett & Jack Trute *) 
 %{
     open Reader
 %}
+
 %token START FINISH EOL EOF
-%token <int> NUM
+%token <int> INT
 %token <string> STRING
-%start main             /* the entry point */
+
+%start main
 %type <Reader.term> main
 %%
 
@@ -13,5 +16,5 @@ main:
 ;
 
 expr:
-        STRING          { STR $1 }
-    ;
+    STRING { STR $1 }
+;
