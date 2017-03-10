@@ -8,27 +8,17 @@ open Functions
 
 let blank = [' ' '\n' '\t']
 let digits = ['0'-'9']+ as lxm
-let word = alpha*
-let stringTerm = 
+let word = 
     '"'['a'-'z''A'-'Z''0'-'9']*'"'
-let identTerm =
+let ident =
     ['a'-'z''A'-'Z''0'-'9']+ as lxm
 let comment = '(''*'_*'*'')'
 
 rule lexermain = parse
-    | blank           { lexermain lexbuf }         (* skip blanks *)
-    | digits {
-        (* parse an Int *)
-        INT(int_of_string lxm)
-    }
-    | stringTerm as lxm {
-        (* parse a String *)
-        STRING(lxm)
-    }
-    | comment {
-        (* parse a comment *)
-        COMMENT
-    }
+    | blank           { lexermain lexbuf }
+    | digits          { INT(int_of_string lxm) }
+    | word as lxm     { STRING(lxm) }
+    | comment         { COMMENT }
     | '('             { LPAREN }
     | ')'             { RPAREN }
     | "start"         { START }
@@ -38,7 +28,8 @@ rule lexermain = parse
     | "funct"         { FUNCT }
     | "->"            { ARROW }
     | "in"            { IN }
+    | "var"           { VAR }
     | "union"         { UNION }
     | "append"        { APPEND }
-    | identTerm       { IDENT(lxm) }
-    | EOF             { EOF }
+    | ident           { IDENT(lxm) }
+    | eof             { EOF }

@@ -5,31 +5,55 @@ open Functions
 type term = 
     | Integer of int
     | String of string
+    | Var of string
+    | Start of term * term
     | "->"                      { FARROW }
     | "in"                      { IN }
- Start of term * term
     | Funct of string * string * term * term
     | Funct1 of string * string * string * term * term
     | Funct2 of string * string * string * string * term * term
+    | VarTerm of string * term * term
     | Apply of term * term
     | Apply2 of term * term * term
     | Apply3 of term * term * term * term
-    | Append of term * term
-    | Union of term * term
-    | Cons of term * term
-    | Concat of term * term
-    | Length of term
+    | AppendTerm of term * term
+    | UnionTerm of term * term
+    | ConsTerm of term * term
+    | ConcatTerm of term * term
+    | LengthTerm of term
 
-exception TypeErrorException
+let rec lookup env v = match env with
+    | [] -> failwith ("Doesn't exist " ^ v)
+    | (vname, vvalue) :: rest -> if v = vname
+                                     then vvalue
+                                     else lookup rest v
+
+let rec lookup2 env v  = match env with
+   | [] -> failwith ("Doesn't exist " ^ v)
+   | (vname1, vvalue1) :: (vname2, vvalue2) :: rest -> if v = vname1
+                                    then (vvalue1, vvalue2)
+                                    else lookup2 rest v
+   | (_, _) :: [] -> failwith ("Doesn't exist " ^ v)
+
+
+let rec lookup3 env v  = match env with
+   | [] -> failwith ("Doesn't exist " ^ v)
+   | (vname1, vvalue1) :: (vname2, vvalue2) :: (vname3, vvalue3) :: rest -> if v = vname1
+                                    then (vvalue1, vvalue2, vvalue3)
+                                    else lookup3 rest v
+   | (_, _) :: [] -> failwith ("Doesn't exist " ^ v)
+   | (_, _) :: (_, _) :: [] -> failwith ("Doesn't exist " ^ v)
+
+
+exception TypeErrException
 exception EmptyListException
-exception UnrecognisedTypeException
 
-let rec evaluator func_env arg_env term =
+let rec eval funct_env arg_env term =
     let to_lang x =
-        let xEval = evaluator func_env arg_env x
+        let xEval = eval funct_env arg_env x
         in (match xEval with
               | Language x' -> x'
-              | _ -> raise TypeErrorException)
+              | _ -> raise TypeErrException)
         in let to_string x =
             let xEval = evaluator func_env arg_env x
             in (match xEval with
