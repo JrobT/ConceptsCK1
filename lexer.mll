@@ -26,10 +26,11 @@ rule lexermain = parse
     | "len"           { LENGTH }
     | "concat"        { CONCAT }
     | "funct"         { FUNCT }
-    | "->"            { ARROW }
+    | "->"            { FARROW }
     | "in"            { IN }
     | "var"           { VAR }
     | "union"         { UNION }
     | "append"        { APPEND }
     | ident           { IDENT(lxm) }
+    | "$last_line"    { INT(get_last_line 10) }
     | eof             { EOF }

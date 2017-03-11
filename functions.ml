@@ -34,7 +34,4 @@ let line_stream_of_channel channel =
       (fun _ ->
          try Some (input_line channel) with End_of_file -> None);;
 
-let remove_dollar str = list_to_string (remove_dollar_from_list (string_to_list str))
-;;
-
 let lines = line_stream_of_channel stdin;;

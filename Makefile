@@ -10,10 +10,9 @@
 #                  you add new modules or new dependencies between 
 #                  existing modules.  (The graph is stored in the file
 #                  .depend)
-
 # These are the object files needed to rebuild the main executable file
 #
-OBJS =   parser.cmo lexer.cmo main.cmo
+OBJS =   parser.cmo lexer.cmo reader.cmo
 
 # Files that need to be generated from other files
 DEPEND += lexer.ml parser.ml 
@@ -26,7 +25,7 @@ all: $(DEPEND) $(OBJS) sdlc
 include .depend
 
 # Build an executable typechecker
-sdlc: $(OBJS) main.cmo 
+sdlc: $(OBJS) reader.cmo 
 	@echo Linking $@
 	ocamlc -o $@ $(COMMONOBJS) $(OBJS) 
 

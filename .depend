@@ -1,10 +1,12 @@
-parser.cmi : Reader.cmi
-Reader.cmi :
-lexer.cmo : parser.cmi
-lexer.cmx : parser.cmx
-main.cmo : parser.cmi lexer.cmo
-main.cmx : parser.cmx lexer.cmx
-parser.cmo : Reader.cmi parser.cmi
-parser.cmx : Reader.cmx parser.cmi
-Reader.cmo : Reader.cmi
-Reader.cmx : Reader.cmi
+functions.cmo :
+functions.cmx :
+lexer.cmo : parser.cmi functions.cmo
+lexer.cmx : parser.cmx functions.cmx
+mysplinterpreter.cmo : reader.cmi parser.cmi lexer.cmo
+mysplinterpreter.cmx : reader.cmx parser.cmx lexer.cmx
+parser.cmo : reader.cmi parser.cmi
+parser.cmx : reader.cmx parser.cmi
+parser.cmi : reader.cmi
+reader.cmo : functions.cmo reader.cmi
+reader.cmx : functions.cmx reader.cmi
+reader.cmi :
