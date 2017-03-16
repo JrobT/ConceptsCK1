@@ -4,26 +4,34 @@ type token =
   | LANGUAGE of (string)
   | STRING of (string)
   | IDENT of (string)
+  | EMPTYWORD of (string)
   | COMMENT
-  | START
-  | END
+  | BEGIN
+  | FINISH
   | PLUS
   | MINUS
-  | LESSTHAN
-  | GREATERTHAN
+  | LESS
+  | GREATER
   | EQUALS
-  | IF
+  | COND
   | THEN
   | ELSE
   | LPAREN
   | RPAREN
+  | HEAD
+  | TAIL
+  | UNION
   | APPEND
   | CONS
-  | UNION
+  | SORT
+  | UNIQ
+  | CAP
+  | SIZE
   | FUNCT
   | IN
   | FARROW
   | VAR
+  | EQUAL
   | CONCAT
   | LENGTH
   | EOF

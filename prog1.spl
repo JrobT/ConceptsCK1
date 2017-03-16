@@ -1,8 +1,8 @@
 (funct appendToEndOfWords l ->
   (var letter = "a" in
-    (if ((size l) == 0)
-      then: {}
-      else: (cons (concat (head l) str) (appendToEndOfWords (tail l)))
+    (cond ((size l) == 0)
+      then {}
+      else (cons (concat (head l) str) (appendToEndOfWords (tail l)))
     ))
   in (cap (sort (uniq (appendToEndOfWords $1))) $last_line)
 )
